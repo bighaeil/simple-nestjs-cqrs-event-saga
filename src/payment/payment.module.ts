@@ -1,10 +1,10 @@
 import { Module } from '@nestjs/common';
-import { OrderCreatedHandler } from './handlers/order-created.handler';
 import { CqrsModule } from '@nestjs/cqrs';
 import { PaymentService } from './payment.service';
+import { RequestPaymentHandler } from './handlers/request-payment.handler';
 
 @Module({
   imports: [CqrsModule],
-  providers: [OrderCreatedHandler, PaymentService],
+  providers: [RequestPaymentHandler, PaymentService],
 })
 export class PaymentModule {}

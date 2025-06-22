@@ -1,12 +1,12 @@
 import { Injectable } from '@nestjs/common';
-import { EventBus } from '@nestjs/cqrs';
-import { OrderCreatedEvent } from './events/order-created.event';
+import { CommandBus } from '@nestjs/cqrs';
 import { OrderRepository } from './repositories/order.repository';
+import { CreateOrderCommand } from './commands/create-order.command';
 
 @Injectable()
 export class OrderService {
   constructor(
-    private readonly eventBus: EventBus,
+    private commandBus: CommandBus,
     private readonly orderRepository: OrderRepository,
   ) {}
 
@@ -16,8 +16,7 @@ export class OrderService {
     const order = await this.orderRepository.create();
     console.log(`[OrderService] Creating order: ${order.id}`);
 
-    console.log(`[Saga] OrderService -> (OrderCreatedEvent)`);
-    this.eventBus.publish(new OrderCreatedEvent(order.id));
+    await this.commandBus.execute(new CreateOrderCommand(order.id));
   }
 
   async findAllOrders() {
