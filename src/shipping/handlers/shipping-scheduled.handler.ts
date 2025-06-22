@@ -9,7 +9,8 @@ export class ShippingScheduledHandler {
   async handle(event: ShippingScheduledEvent) {
     console.log(`[ShippingService] ScheduleCompleted: ${event.orderId}`);
 
-    console.log(`[Saga] ShippingService: END`);
     await this.shippingService.completeShipping(event.orderId);
+
+    console.log(`[Saga] ShippingService: END`);
   }
 }
