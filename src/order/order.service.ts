@@ -10,4 +10,8 @@ export class OrderService {
     console.log(`[OrderService] Creating order: ${order.id}`);
     return order;
   }
+
+  async findAllOrders() {
+    return await this.orderRepository.findAll();
+  }
 }

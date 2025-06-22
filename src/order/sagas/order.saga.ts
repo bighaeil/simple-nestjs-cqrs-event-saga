@@ -14,9 +14,11 @@ export class OrderSaga {
   orderCreated = (
     events$: Observable<OrderCreatedEvent>,
   ): Observable<ICommand> => {
-    console.log(`2. OrderSaga → RequestPaymentCommand`);
     return events$.pipe(
-      map((event) => new RequestPaymentCommand(event.orderId)),
+      map((event) => {
+        console.log(`2. OrderSaga → RequestPaymentCommand`);
+        return new RequestPaymentCommand(event.orderId);
+      }),
     );
   };
 
@@ -24,9 +26,11 @@ export class OrderSaga {
   paymentCompleted = (
     events$: Observable<PaymentCompletedEvent>,
   ): Observable<ICommand> => {
-    console.log(`4. OrderSaga → ReserveInventoryCommand`);
     return events$.pipe(
-      map((event) => new ReserveInventoryCommand(event.orderId)),
+      map((event) => {
+        console.log(`4. OrderSaga → ReserveInventoryCommand`);
+        return new ReserveInventoryCommand(event.orderId);
+      }),
     );
   };
 
@@ -34,9 +38,11 @@ export class OrderSaga {
   inventoryReserved = (
     events$: Observable<InventoryReservedEvent>,
   ): Observable<ICommand> => {
-    console.log(`6. OrderSaga → ScheduleShippingCommand`);
     return events$.pipe(
-      map((event) => new ScheduleShippingCommand(event.orderId)),
+      map((event) => {
+        console.log(`6. OrderSaga → ScheduleShippingCommand`);
+        return new ScheduleShippingCommand(event.orderId);
+      }),
     );
   };
 }
