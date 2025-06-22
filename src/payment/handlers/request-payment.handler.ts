@@ -15,6 +15,7 @@ export class RequestPaymentHandler
   async execute(command: RequestPaymentCommand): Promise<void> {
     await this.paymentService.processPayment(command.orderId);
 
+    console.log(`3. PaymentService → PaymentCompletedEvent`);
     this.eventBus.publish(new PaymentCompletedEvent(command.orderId));
   }
 }

@@ -1,17 +1,13 @@
-import { Controller, Get, Post } from '@nestjs/common';
-import { OrderService } from './order.service';
+import { Controller, Post } from '@nestjs/common';
+import { CommandBus } from '@nestjs/cqrs';
+import { CreateOrderCommand } from './commands/create-order.command';
 
 @Controller('/orders')
 export class OrderController {
-  constructor(private orderService: OrderService) {}
+  constructor(private commandBus: CommandBus) {}
 
   @Post()
   async createOrder() {
-    return this.orderService.createOrder();
-  }
-
-  @Get()
-  async findAllOrders() {
-    return this.orderService.findAllOrders();
+    await this.commandBus.execute(new CreateOrderCommand());
   }
 }

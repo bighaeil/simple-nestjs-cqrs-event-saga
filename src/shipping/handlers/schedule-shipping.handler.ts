@@ -9,6 +9,7 @@ export class ScheduleShippingHandler
   constructor(private readonly shippingService: ShippingService) {}
 
   async execute(command: ScheduleShippingCommand): Promise<void> {
+    console.log(`7. ShippingService → 배송 예약 완료`);
     await this.shippingService.scheduleShipping(command.orderId);
   }
 }

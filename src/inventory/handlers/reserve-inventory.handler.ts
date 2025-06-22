@@ -15,6 +15,7 @@ export class ReserveInventoryHandler
   async execute(command: ReserveInventoryCommand): Promise<void> {
     await this.inventoryService.reserveInventory(command.orderId);
 
+    console.log(`5. InventoryService → InventoryReservedEvent`);
     this.eventBus.publish(new InventoryReservedEvent(command.orderId));
   }
 }
