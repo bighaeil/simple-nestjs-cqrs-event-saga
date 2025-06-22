@@ -11,8 +11,6 @@ export class PaymentCompletedHandler {
   ) {}
 
   async handle(event: PaymentCompletedEvent) {
-    console.log(`[InventoryService] PaymentCompleted: ${event.orderId}`);
-
     await this.inventoryService.reserveInventory(event.orderId);
 
     console.log(`[Saga] InventoryService -> (InventoryReservedEvent)`);

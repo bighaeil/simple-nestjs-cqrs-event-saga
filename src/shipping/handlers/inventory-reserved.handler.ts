@@ -1,6 +1,5 @@
 import { InventoryReservedEvent } from '../../inventory/events/inventory-reserved.event';
 import { EventBus, EventsHandler } from '@nestjs/cqrs';
-import { ShippingScheduledEvent } from '../events/shipping-scheduled.event';
 import { ShippingService } from '../shipping.service';
 
 @EventsHandler(InventoryReservedEvent)
@@ -11,11 +10,8 @@ export class InventoryReservedHandler {
   ) {}
 
   async handle(event: InventoryReservedEvent) {
-    console.log(`[ShippingService] InventoryReserved: ${event.orderId}`);
-
     await this.shippingService.scheduleShipping(event.orderId);
 
-    console.log(`[Saga] ShippingService -> (ShippingScheduledEvent)`);
-    this.eventBus.publish(new ShippingScheduledEvent(event.orderId));
+    console.log(`[Saga] ShippingService: End`);
   }
 }

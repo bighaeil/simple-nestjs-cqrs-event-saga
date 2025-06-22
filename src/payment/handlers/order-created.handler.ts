@@ -11,8 +11,6 @@ export class OrderCreatedHandler {
   ) {}
 
   async handle(event: OrderCreatedEvent) {
-    console.log(`[PaymentService] OrderReceived: ${event.orderId}`);
-
     await this.paymentService.processPayment(event.orderId);
 
     console.log(`[Saga] PaymentService -> (PaymentCompletedEvent)`);
