@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { ICommand, Saga } from '@nestjs/cqrs';
+import { ICommand, ofType, Saga } from '@nestjs/cqrs';
 import { map, Observable } from 'rxjs';
 import { OrderCreatedEvent } from '../events/order-created.event';
 import { PaymentCompletedEvent } from '../../payment/events/payment-completed.event';
@@ -11,38 +11,32 @@ import { ScheduleShippingCommand } from '../../shipping/commands/schedule-shippi
 @Injectable()
 export class OrderSaga {
   @Saga()
-  orderCreated = (
-    events$: Observable<OrderCreatedEvent>,
-  ): Observable<ICommand> => {
-    return events$.pipe(
+  orderCreated = (events$: Observable<any>): Observable<ICommand> =>
+    events$.pipe(
+      ofType(OrderCreatedEvent),
       map((event) => {
         console.log(`2. OrderSaga → RequestPaymentCommand`);
         return new RequestPaymentCommand(event.orderId);
       }),
     );
-  };
 
   @Saga()
-  paymentCompleted = (
-    events$: Observable<PaymentCompletedEvent>,
-  ): Observable<ICommand> => {
-    return events$.pipe(
+  paymentCompleted = (events$: Observable<any>): Observable<ICommand> =>
+    events$.pipe(
+      ofType(PaymentCompletedEvent),
       map((event) => {
         console.log(`4. OrderSaga → ReserveInventoryCommand`);
         return new ReserveInventoryCommand(event.orderId);
       }),
     );
-  };
 
   @Saga()
-  inventoryReserved = (
-    events$: Observable<InventoryReservedEvent>,
-  ): Observable<ICommand> => {
-    return events$.pipe(
+  inventoryReserved = (events$: Observable<any>): Observable<ICommand> =>
+    events$.pipe(
+      ofType(InventoryReservedEvent),
       map((event) => {
         console.log(`6. OrderSaga → ScheduleShippingCommand`);
         return new ScheduleShippingCommand(event.orderId);
       }),
     );
-  };
 }
